@@ -1,7 +1,16 @@
 {
   "name": "sexton",
-  "owner": {"name": "Kohl Jary"},
+  "owner": {
+    "name": "Kohl Jary"
+  },
+  "metadata": {
+    "description": "Sexton: a deterministic, local, consent-first record of your machine for AI agents."
+  },
   "plugins": [
-    {"name": "sexton", "source": "./plugin", "description": "A deterministic record of your machine, rung like a bell when something needs you."}
+    {
+      "name": "sexton",
+      "source": "./plugin",
+      "description": "A deterministic record of your machine, rung like a bell when something needs you."
+    }
   ]
 }
