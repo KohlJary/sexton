@@ -1,6 +1,6 @@
 import datetime as dt
 
-from tells import sense, store
+from sexton import sense, store
 
 LOG = """\
 [2025-10-23T12:00:00-0400] [PACMAN] Running 'pacman -Syu'
@@ -28,17 +28,17 @@ def test_an_aborted_syu_is_not_an_upgrade(tmp_path):
     assert u["days_since_full_upgrade"] > 300
 
 
-def test_tells_names_the_weekend():
+def test_bells_name_the_weekend():
     v = {"disks": [{"mount": "/", "used_pct": 83.0, "free_gb": 597.0, "total_gb": 3500.0}],
          "memory": {"available_pct": 40.0, "swap_used_pct": 0.0},
          "upgrades": {"last_full_upgrade": "2025-10-23T12:08:00-0400", "days_since_full_upgrade": 396.0},
          "distro": {"name": "Manjaro Linux", "branch": "unstable"},
-         "failed_units": {"system": [], "user": ["robokohl-queue-dm.service"]}, "temps": {"k10temp": 70.0}}
-    t = sense.tells(v)
+         "failed_units": {"system": [], "user": ["queue-dm.service"]}, "temps": {"k10temp": 70.0}}
+    t = sense.bells(v)
     assert any("/ is at 83.0%" in x for x in t)
     assert any("396 days ago (2025-10-23)" in x for x in t)
     assert any("Manjaro unstable" in x for x in t)
-    assert any("robokohl-queue-dm.service" in x for x in t)
+    assert any("queue-dm.service" in x for x in t)
 
 
 def test_quiet_machine_says_nothing():
@@ -46,7 +46,7 @@ def test_quiet_machine_says_nothing():
          "memory": {"available_pct": 60.0, "swap_used_pct": 0.0},
          "upgrades": {"last_full_upgrade": "x", "days_since_full_upgrade": 3.0},
          "distro": {}, "failed_units": {"system": [], "user": []}, "temps": {}}
-    assert sense.tells(v) == []
+    assert sense.bells(v) == []
 
 
 def test_mounts_skip_pseudo_and_duplicates(tmp_path):
@@ -67,7 +67,7 @@ def test_trend_slope_and_projection(tmp_path):
 
 
 def test_record_flattens_and_keeps_90_days(tmp_path, monkeypatch):
-    monkeypatch.setenv("TELLS_STATE", str(tmp_path))
+    monkeypatch.setenv("SEXTON_STATE", str(tmp_path))
     db = store.connect(tmp_path / "t.db")
     old = {"at": "2026-01-01T00:00:00", "disks": [{"mount": "/", "used_pct": 50.0, "free_gb": 1.0}],
            "memory": {"available_pct": 50.0, "swap_used_pct": 0.0}, "load": {"load1": 1.0}}
@@ -95,4 +95,4 @@ def test_stale_service_is_a_vital():
     s = sense.services(run=fake)
     assert s and s[0]["stale"] and s[0]["branch"] == "main"
     v = {"disks": [], "memory": {"available_pct": 50.0}, "services": s}
-    assert any("A fix isn't live until it restarts" in t for t in sense.tells(v))
+    assert any("A fix isn't live until it restarts" in t for t in sense.bells(v))

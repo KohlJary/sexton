@@ -2,25 +2,32 @@
 
 v0 serves tier 0 (vitals) only, so there's nothing to grant yet: every
 tool here is harmless machine health. Every call is still logged with the
-client's name, so `tells access` always shows who's been reading. Tiers 1+
+client's name, so `sexton access` always shows who's been reading. Tiers 1+
 arrive with the permission broker, in this process, not in any plugin.
 """
-from mcp.server.fastmcp import Context, FastMCP
+from mcp.server.mcpserver import Context, MCPServer
 
 from . import cli, sense, store
 
-mcp = FastMCP("tells", instructions=(
+mcp = MCPServer("sexton", version="0.0.1", instructions=(
     "A deterministic record of this machine (tier 0: vitals only). Read it before "
     "guessing about disk, memory, temperatures, failed services or upgrade state. "
     "What it reports is measured; anything you infer from it, say is yours."))
 
 
 def _who(ctx):
-    try:
-        ci = ctx.session.client_params.clientInfo
-        return f"{ci.name}/{ci.version}"
-    except Exception:
-        return "unknown-client"
+    """The client's self-reported name/version, from the MCP handshake. Self-reported:
+    fine for a log, never enough for a grant (tiers 1+ need a per-agent token)."""
+    for path in (("session", "client_params", "client_info"), ("session", "client_params", "clientInfo"),
+                 ("request_context", "session", "client_params", "client_info")):
+        o = ctx
+        try:
+            for a in path:
+                o = getattr(o, a)
+            return f"{o.name}/{o.version}"
+        except Exception:
+            continue
+    return "unknown-client"
 
 
 @mcp.tool()

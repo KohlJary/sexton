@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "sexton": {"command": "sexton", "args": ["mcp"]}
+  }
+}

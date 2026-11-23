@@ -209,7 +209,7 @@ def services(run=subprocess.run):
     return out
 
 
-SENSOR = "tells 0.0.1"
+SENSOR = "sexton 0.0.1"
 SCHEMA = 1
 
 
@@ -224,9 +224,9 @@ def vitals(net=False):
     return v
 
 
-# --- tells: the record, read for you ------------------------------------------
+# --- bells: what the sexton rings for ------------------------------------------
 
-def tells(v, pending=None):
+def bells(v, pending=None):
     """Plain-language notices from a vitals record. Deterministic rules, no model."""
     out = []
     for d in v["disks"]:

@@ -1,0 +1,6 @@
+[Unit]
+Description=Sexton: measure the machine and store a sample
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/sexton record --net

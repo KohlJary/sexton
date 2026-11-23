@@ -12,13 +12,13 @@ RETAIN_DAYS = 90
 
 
 def state_dir():
-    d = Path(os.environ.get("TELLS_STATE") or Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local" / "state")) / "tells")
+    d = Path(os.environ.get("SEXTON_STATE") or Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local" / "state")) / "sexton")
     d.mkdir(parents=True, exist_ok=True)
     return d
 
 
 def connect(path=None):
-    db = sqlite3.connect(path or state_dir() / "tells.db")
+    db = sqlite3.connect(path or state_dir() / "sexton.db")
     db.execute("create table if not exists samples (ts text, metric text, value real)")
     db.execute("create index if not exists samples_m on samples (metric, ts)")
     return db

@@ -1,0 +1,7 @@
+{
+  "name": "sexton",
+  "owner": {"name": "Kohl Jary"},
+  "plugins": [
+    {"name": "sexton", "source": "./plugin", "description": "A deterministic record of your machine, rung like a bell when something needs you."}
+  ]
+}

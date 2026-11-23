@@ -1,0 +1,6 @@
+{
+  "name": "sexton",
+  "version": "0.0.1",
+  "description": "The sexton keeps the building and rings when something needs you: a deterministic record of your machine (disk, memory, temps, failed and stale services, upgrade state), read instead of guessed.",
+  "author": {"name": "Kohl Jary"}
+}

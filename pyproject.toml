@@ -1,19 +1,19 @@
 [project]
-name = "tells"
+name = "sexton"
 version = "0.0.1"
 description = "A deterministic record of your machine, for you and any agent you let read it."
 requires-python = ">=3.11"
-dependencies = ["mcp>=1.2"]
+dependencies = ["mcp>=2.3,<3"]
 
 [project.scripts]
-tells = "tells.cli:main"
+sexton = "sexton.cli:main"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/tells"]
+packages = ["src/sexton"]
 
 [dependency-groups]
 dev = ["pytest"]
